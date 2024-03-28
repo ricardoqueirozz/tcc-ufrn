@@ -172,6 +172,8 @@ class openSimulation:
                                 rowsTotal += rows
                             # if more configurations are implemented, it is necessary to also implement here
                     df_metricIpCdf = pd.DataFrame()
+                    #ADD
+                    df_metricV2XCdf = pd.DataFrame()
                     df_metricSytemcdf = pd.DataFrame()
                     df_metricUsercdf = pd.DataFrame()
                     df_metricBwpcdf = pd.DataFrame()
@@ -264,6 +266,8 @@ class openSimulation:
                                 rowsTotal += rows
                             # if more configurations are implemented, it is necessary to also implement here
                     df_metricIpCdf = pd.DataFrame()
+                    #ADD
+                    df_metricV2XCdf = pd.DataFrame()
                     df_metricSytemcdf = pd.DataFrame()
                     df_metricUsercdf = pd.DataFrame()
                     df_metricBwpcdf = pd.DataFrame()
@@ -359,6 +363,8 @@ class openSimulation:
                                 rowsTotal += rows
                             # if more configurations are implemented, it is necessary to also implement here
                     df_metricIpCdf = pd.DataFrame()
+                    #ADD
+                    df_metricV2XCdf = pd.DataFrame()
                     df_metricSytemcdf = pd.DataFrame()
                     df_metricUsercdf = pd.DataFrame()
                     df_metricBwpcdf = pd.DataFrame()
@@ -457,6 +463,8 @@ class openSimulation:
                         
                             
                     df_metricIpCdf = pd.DataFrame()
+                    #ADD
+                    df_metricV2XCdf = pd.DataFrame()
                     df_metricSytemcdf = pd.DataFrame()
                     df_metricUsercdf = pd.DataFrame()
                     df_metricBwpcdf = pd.DataFrame()
@@ -497,7 +505,102 @@ class openSimulation:
                 
                 
             elif nOfCurlines==3 and SimTied == 1 and nOfCurlinesTied == 2:
-                print ("to be implemented")
+                legendEE = [] 
+                legendCdfWithoutCG= []
+                window=0.1
+                curLine = self.campaignLines[idoc][0]
+                curLine1 = self.campaignLines[idoc][1]
+                curLine2 = self.campaignLines[idoc][2]
+                campaignX = self.campaignX[idoc]
+                nCurlines = len(self.doc[idoc]['scenarioParameters'][curLine])*len(self.doc[idoc]['scenarioParameters'][curLine2])
+                if idoc == 0: # variables will not restart when calculating the next campaign
+                    rowsTotal=0    
+                    for iidoc in range(len(doc)):
+                        if self.SimTied[iidoc] == '0':
+                            ncurlines = int(self.nOfCurlines[iidoc])
+                            if ncurlines == 1:
+                                curLineDoc = self.campaignLines[iidoc][0]
+                                rows = len(self.doc[iidoc]['scenarioParameters'][curLineDoc])
+                                rowsTotal += rows
+                            elif ncurlines == 2:
+                                curLineDoc = self.campaignLines[iidoc][0]
+                                curLineDoc1 = self.campaignLines[iidoc][1]
+                                rows = len(self.doc[iidoc]['scenarioParameters'][curLineDoc])*len(self.doc[iidoc]['scenarioParameters'][curLineDoc1])
+                                rowsTotal += rows
+                            elif ncurlines == 3:
+                                curLineDoc = self.campaignLines[iidoc][0]
+                                curLineDoc1 = self.campaignLines[iidoc][1]
+                                curLineDoc2 = self.campaignLines[iidoc][2]
+                                rows = len(self.doc[iidoc]['scenarioParameters'][curLineDoc])*len(self.doc[iidoc]['scenarioParameters'][curLineDoc1])*len(self.doc[iidoc]['scenarioParameters'][curLineDoc2])
+                                rowsTotal += rows
+                        else:
+                            if (self.nOfCurlines[iidoc] == '2' and self.nOfCurlinesTied[iidoc] == '2') or (self.nOfCurlines[iidoc] == '3' and self.nOfCurlinesTied[iidoc] == '3'):
+                                curLineDoc = self.campaignLines[iidoc][0]
+                                rows = len(self.doc[iidoc]['scenarioParameters'][curLineDoc])
+                                rowsTotal += rows
+                            elif self.nOfCurlines[iidoc] == '3' and self.nOfCurlinesTied[iidoc] == '2':
+                                curLineDoc = self.campaignLines[iidoc][0]
+                                curLineDoc2 = self.campaignLines[iidoc][2]
+                                rows = len(self.doc[iidoc]['scenarioParameters'][curLineDoc])*len(self.doc[iidoc]['scenarioParameters'][curLineDoc2])
+                                rowsTotal += rows
+                            elif self.nOfCurlines[iidoc] == '4' and self.nOfCurlinesTied[iidoc] == '2':
+                                curLineDoc = self.campaignLines[iidoc][0]
+                                curLineDoc2 = self.campaignLines[iidoc][2]
+                                curLineDoc3 = self.campaignLines[iidoc][3]
+                                rows = len(self.doc[iidoc]['scenarioParameters'][curLineDoc])*len(self.doc[iidoc]['scenarioParameters'][curLineDoc2])*len(self.doc[iidoc]['scenarioParameters'][curLineDoc3])
+                                rowsTotal += rows
+                            elif self.nOfCurlines[iidoc] == '5' and self.nOfCurlinesTied[iidoc] == '2':
+                                curLineDoc = self.campaignLines[iidoc][0]
+                                curLineDoc2 = self.campaignLines[iidoc][2]
+                                curLineDoc3 = self.campaignLines[iidoc][3]
+                                curLineDoc4 = self.campaignLines[iidoc][4]
+                                rows = len(self.doc[iidoc]['scenarioParameters'][curLineDoc])*len(self.doc[iidoc]['scenarioParameters'][curLineDoc2])*len(self.doc[iidoc]['scenarioParameters'][curLineDoc3])*len(self.doc[iidoc]['scenarioParameters'][curLineDoc4])
+                                rowsTotal += rows
+                            # if more configurations are implemented, it is necessary to also implement here
+                        
+                            
+                    df_metricIpCdf = pd.DataFrame()
+                    #ADD
+                    df_metricV2XCdf = pd.DataFrame()
+                    df_metricSytemcdf = pd.DataFrame()
+                    df_metricUsercdf = pd.DataFrame()
+                    df_metricBwpcdf = pd.DataFrame()
+                    dfPerUserPerCellMetric = pd.DataFrame()
+                    dfPerUserPerCellTime = pd.DataFrame()
+                    dfBarPlotPerStateFinal = pd.DataFrame()
+                    dfBarPlotFinal= pd.DataFrame()
+                    dfMetricPieUser = pd.DataFrame()
+                    dfMetricPieFinal = pd.DataFrame()
+                    vtMetricMeanUser,vtMetricMeanBwp,vtMetricMeanSystem,vtMetricMeanIP=[],[],[],[]
+                    mm_tput1,mm_tput2=[],[]
+                    mm_metricIP = np.zeros((rowsTotal,len(self.doc[idoc]['scenarioParameters'][campaignX])))
+                    mm_metricUser = np.zeros((rowsTotal,len(self.doc[idoc]['scenarioParameters'][campaignX])))
+                    mm_metricBwp = np.zeros((rowsTotal,len(self.doc[idoc]['scenarioParameters'][campaignX])))
+                    mm_metricSystem = np.zeros((rowsTotal,len(self.doc[idoc]['scenarioParameters'][campaignX])))
+                    m_tputCI = np.zeros((len(doc)*len(self.doc[idoc]['scenarioParameters'][curLine]),len(self.doc[idoc]['scenarioParameters'][campaignX])))
+            
+                xlabel= campaignX + " (kbps)"
+                for ilegend in self.doc[idoc]['scenarioParameters'][curLine]:
+                    for ilegend2 in self.doc[idoc]['scenarioParameters'][curLine2]:
+                        legendEntry = self.CampaignTag[idoc] + ": " + curLine + " " + ilegend + ", " +curLine2 + " " + ilegend2
+                        legend.append(legendEntry) 
+                        for ilegendcdf in self.doc[idoc]['scenarioParameters'][campaignX]:
+                            legendCdfEntry = legendEntry + "," + " " + campaignX + " " + ilegendcdf 
+                            legendCdf.append(legendCdfEntry)
+                            legendEE.append(legendCdfEntry)
+                        
+                #legend without CampaignTag        
+                for ilegend in self.doc[idoc]['scenarioParameters'][curLine]:
+                    for ilegend2 in self.doc[idoc]['scenarioParameters'][curLine2]:
+                        legendEntry = curLine + " " + ilegend + ", " +curLine2 + " " + ilegend2
+                        #legend.append(legendEntry) 
+                        for ilegendcdf in self.doc[idoc]['scenarioParameters'][campaignX]:
+                            legendCdfEntry = legendEntry + "," + " " + campaignX + " " + ilegendcdf 
+                            legendCdfWithoutCG.append(legendCdfEntry)        
+                        
+                labelA = cycle(legend)
+                labelAcdf = cycle(legendCdf)
+                labelAPC = cycle(legendEE)
             elif nOfCurlines==4 and SimTied == 1 and nOfCurlinesTied == 2:
                 legendEE = []
                 legendCdfWithoutCG= []
@@ -553,6 +656,8 @@ class openSimulation:
                                 rowsTotal += rows
                             # if more configurations are implemented, it is necessary to also implement here
                     df_metricIpCdf = pd.DataFrame()
+                    #ADD
+                    df_metricV2XCdf = pd.DataFrame()
                     df_metricSytemcdf = pd.DataFrame()
                     df_metricUsercdf = pd.DataFrame()
                     df_metricBwpcdf = pd.DataFrame()
@@ -654,6 +759,8 @@ class openSimulation:
                                 rowsTotal += rows
                             # if more configurations are implemented, it is necessary to also implement here   
                     df_metricIpCdf = pd.DataFrame()
+                    #ADD
+                    df_metricV2XCdf = pd.DataFrame()
                     df_metricSytemcdf = pd.DataFrame()
                     df_metricUsercdf = pd.DataFrame()
                     df_metricBwpcdf = pd.DataFrame()
@@ -727,8 +834,9 @@ class openSimulation:
                             CurSimuFileIp = outputDir + "/JOB" +str(iJob) + "/Sim_" + str(isim) + "/DL_Results.txt"
                         #ADD
                         elif lgraphs == 'V2X':
-                            CurSimuFile = outputDir + "/JOB" +str(iJob) + "/Sim_" + str(isim) + "default-nr-v2x-west-to-east-highway.db"
-                            
+                            CurSimuFile = outputDir + "/JOB" +str(iJob) + "/Sim_" + str(isim) + "/"+ self.CampaignTag[0] +".db"
+                            print(CurSimuFile)
+                        
                         if lgraphs == 'V2X':
                             con = sqlite3.connect(CurSimuFile)
 
@@ -739,30 +847,44 @@ class openSimulation:
                             df_tables = {}
 
                             for table in list_of_tables: 
-                                if table == ('avrgPir',) or table == ('thput',) or table == ('avrgPrr',):
+                                if table == ('avrgPir',) or table == ('thput',) or table == ('avrgPrr',) or table == ('psschRxUePhy',):
                                     df_tables[table] = pd.read_sql_query("SELECT * FROM "+table[0]+";", con)
                             con.close()   
                         
-                            if metric.split('-')[0] == "Tput":
-                                dfmetricA = df_tables[('thput',)]['thputKbps']
+                            if metric.split('-')[0] == "PIR":
+                                dfmetricA = df_tables[('avrgPir',)]['avrgPirSec']*1000
                                 vtmetric=np.append(vtmetric,dfmetricA)
-                                column ='thputKbps'
-                                ylabel = 'CDF'
-                                xlabelcdf = "Average Throughput [kbit/s]"
-                            elif metric.split('-')[0] == "Prr":
-                                dfmetricA = df_tables[('avrgPrr',)]['avrgPrr']
-                                vtmetric=np.append(vtmetric,dfmetricA)
-                                column ='avrgPrr'
-                                ylabel = 'CDF'
-                                xlabelcdf = "Average Throughput [kbit/s]"
-                            elif metric.split('-')[0] == "Prr":
-                                dfmetricA = df_tables[('avrgPir',)]['avrgPirSec']/1000
-                                vtmetric=np.append(vtmetric,dfmetricA)
-                                column ='avrgPirSec'
                                 ylabel = 'CDF'
                                 xlabelcdf = "Average PIR [ms]"
-                            
-                        if lgraphs == 'IP':
+                            elif metric.split('-')[0] == "PRR":
+                                dfmetricA = df_tables[('avrgPrr',)]['avrgPrr']
+                                vtmetric=np.append(vtmetric,dfmetricA)
+                                ylabel = 'CDF'
+                                xlabelcdf = "Average PRR"
+                            elif metric.split('-')[0] == "Tput":
+                                dfmetricA = df_tables[('thput',)]['thputKbps']
+                                vtmetric=np.append(vtmetric,dfmetricA)
+                                ylabel = 'CDF'
+                                xlabelcdf = "Average Throughput [kbit/s]"
+                            elif metric.split('-')[0] == "Tbler":
+                                dfmetricA = df_tables[('psschRxUePhy',)][['rnti','psschTbler']]
+                                for irnti in dfmetricA['rnti'].unique():
+                                    dfperuser = dfmetricA[(dfmetricA['rnti']==irnti)].dropna()
+                                    MetricMean = np.mean(dfperuser['psschTbler'])
+                                    vtmetric = np.append(vtmetric,MetricMean)                                 
+                                ylabel = 'CDF'
+                                xlabelcdf = "tbler per user"
+                            elif metric.split('-')[0] == "SINR":
+                                dfmetricA = df_tables[('psschRxUePhy',)][['rnti','avrgSinr']]
+                                for irnti in dfmetricA['rnti'].unique():
+                                    dfperuser = dfmetricA[(dfmetricA['rnti']==irnti)].dropna()
+                                    MetricMean = np.mean(dfperuser['avrgSinr'])
+                                    MetricMean = 10*np.log10(MetricMean)
+                                    vtmetric = np.append(vtmetric,MetricMean) 
+                                ylabel = 'CDF'
+                                xlabelcdf = "Average SINR per user"
+                                
+                        elif lgraphs == 'IP':
                             if metric.split('-')[0] == "Tput":
                                 dfmetricA = df[' T_put(Mbps)']*1000 # kbps // algumas campanhas do M2 precisam dessa multiplicação por 2. Rever para outras campanhas.
                                 vtmetric=np.append(vtmetric,dfmetricA)
@@ -1106,7 +1228,7 @@ class openSimulation:
                                         vtMetricMeanUser = vtMetricMeanUser[~np.isnan(vtMetricMeanUser)]
                                 
                     
-                    #Getting Overall Metrics       
+                    #Getting Overall Metrics 
                     if metric.split('-')[1] == 'IP':                            
                         vtMetricMeanIP = vtmetric
                         #print(vtMetricMeanIP)
@@ -1118,7 +1240,17 @@ class openSimulation:
                         elif len(metric.split('-')) <= 2:
                             mm_metricIP[iCampaignSim,iCampaignX] = np.mean(vtMetricMeanIP) # Mean of Metrics 
                         elif len(metric.split('-')) > 2:
-                            df_metricIpCdf = pd.concat([df_metricIpCdf,dfMetricMeanIP],axis=1) ## CDF                            
+                            df_metricIpCdf = pd.concat([df_metricIpCdf,dfMetricMeanIP],axis=1) ## CDF  
+                    
+                    #ADD
+                    elif metric.split('-')[1] == 'V2X':
+                        vtMetricMeanV2X = vtmetric
+                        #print(vtMetricMeanIP)
+                        vtMetricMeanV2X = vtMetricMeanV2X[~np.isnan(vtMetricMeanV2X)]
+                        dfMetricMeanV2X = pd.DataFrame(vtMetricMeanV2X)
+                        if len(metric.split('-')) > 2:
+                            df_metricV2XCdf = pd.concat([df_metricV2XCdf,dfMetricMeanV2X],axis=1) ## CDF 
+                    
                     else:
                         if metric.split('-')[1] == 'User':
                             if metric.split('-')[0] == "EEBar":                               
@@ -1187,7 +1319,12 @@ class openSimulation:
                                 mm_metricSystem[iCampaignSim,iCampaignX] = np.mean(vtMetricMeanBwp) # Mean of Metrics
                             if len(metric.split('-')) > 2:
                                 df_metricBwpcdf = pd.concat([df_metricBwpcdf,dfMetricMeanBwp],axis=1) # CDF
-                                
+                        
+                        #ADD
+                        elif metric.split('-')[1] == 'V2X':
+                            lwindow = Ssimtime
+                            hwindow = Ssimtime + window    
+                            
                         elif metric.split('-')[1] == 'System':
                             ## System Metric
                             if metric.split('-')[0] == "Tput" or metric.split('-')[0] == "US":
@@ -1344,7 +1481,7 @@ class openSimulation:
                     df_metricCdf = df_metricIpCdf
                 #ADD    
                 elif metric.split('-')[1] == "V2X":
-                    df_metricCdf = df_metricIpCdf
+                    df_metricCdf = df_metricV2XCdf
                 
                 # Confidence interval according to https://stackoverflow.com/questions/15033511/compute-a-confidence-interval-from-sample-data
                 x=0
@@ -1819,9 +1956,11 @@ refEgGraph = 1 # first graph values are the reference for Energy Gain Graph
 if lgraphs == 'V2X':
     if tGraphs == 'All':
          finalMetrics = [
-                         'Tput-'+graph+'-CDF',
-                         'Pir-'+graph+'-CDF',
-                         'Prr-'+graph+'-CDF'
+                         #'Tbler-V2X-CDF',
+                         #'SINR-V2X-CDF'
+                         'PIR-V2X-CDF',
+                         'PRR-V2X-CDF',
+                         'Tput-V2X-CDF'
                          ]        
 if lgraphs == 'PHY':  
     if tGraphs == 'mean':
